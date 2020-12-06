@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public LayerMask ground;
 
     public int cherry;
+
+    public Text cherryNum;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +57,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 切换动画效果
     void SwichAnim()
     {
         anim.SetBool("idle", false);
@@ -72,12 +76,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 收集物品
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Collection")
         {
             Destroy(collision.gameObject);
             cherry += 1;
+            cherryNum.text = cherry.ToString();
         }
     }
 }
