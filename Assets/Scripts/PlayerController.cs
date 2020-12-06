@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // 角色跳跃
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce * Time.deltaTime);
             anim.SetBool("jumping", true);
