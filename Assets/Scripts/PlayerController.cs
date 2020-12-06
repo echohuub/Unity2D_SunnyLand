@@ -6,8 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody2D rb;
     public Animator anim;
+    public Collider2D coll;
     public float speed;
     public float jumpForce;
+
+    public LayerMask ground;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +22,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Movement();
+        SwichAnim();
     }
 
     void Movement()
@@ -42,6 +46,25 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce * Time.deltaTime);
+            anim.SetBool("jumping", true);
+        }
+    }
+
+    void SwichAnim()
+    {
+        anim.SetBool("idle", false);
+        if (anim.GetBool("jumping"))
+        {
+            // 速度小于0的时候开始播放下落的动画
+            if (rb.velocity.y < 0)
+            {
+                anim.SetBool("jumping", false);
+                anim.SetBool("falling", true);
+            }
+        } else if (coll.IsTouchingLayers(ground))
+        {
+            anim.SetBool("falling", false);
+            anim.SetBool("idle", true);
         }
     }
 }
