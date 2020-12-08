@@ -65,6 +65,10 @@ public class PlayerController : MonoBehaviour
     void SwichAnim()
     {
         anim.SetBool("idle", false);
+        if (rb.velocity.y < 0.1f && !coll.IsTouchingLayers(ground))
+        {
+            anim.SetBool("falling", true);
+        }
         if (anim.GetBool("jumping"))
         {
             // 速度小于0的时候开始播放下落的动画
