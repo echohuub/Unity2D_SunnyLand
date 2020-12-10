@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -96,15 +97,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // 收集物品
+    // 碰撞触发器
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // 收集物品
         if (collision.tag == "Collection")
         {
             cherryAudio.Play();
             Destroy(collision.gameObject);
             cherry += 1;
             cherryNum.text = cherry.ToString();
+        }
+        if (collision.tag == "DeadLine")
+        {
+            GetComponent<AudioSource>().enabled = false;
+            Invoke("Restart", 2f);
         }
     }
 
@@ -137,5 +144,10 @@ public class PlayerController : MonoBehaviour
                 isHurt = true;
             }
         }
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
