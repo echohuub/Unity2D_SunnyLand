@@ -7,8 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Animator anim;
-
     public Collider2D coll;
+    public AudioSource jumpAudio, hurtAudio, cherryAudio;
     public float speed;
     public float jumpForce;
 
@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce * Time.deltaTime);
+            jumpAudio.Play();
             anim.SetBool("jumping", true);
         }
     }
@@ -100,6 +101,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.tag == "Collection")
         {
+            cherryAudio.Play();
             Destroy(collision.gameObject);
             cherry += 1;
             cherryNum.text = cherry.ToString();
@@ -126,10 +128,12 @@ public class PlayerController : MonoBehaviour
             else if (transform.position.x < collision.gameObject.transform.position.x)
             {
                 rb.velocity = new Vector2(-10, rb.velocity.y);
+                hurtAudio.Play();
                 isHurt = true;
             } else if (transform.position.x > collision.gameObject.transform.position.x)
             {
                 rb.velocity = new Vector2(10, rb.velocity.y);
+                hurtAudio.Play();
                 isHurt = true;
             }
         }
